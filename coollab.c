@@ -4,13 +4,17 @@
 #include <stdlib.h>
 #include <math.h>
 
-const float pi = 3.14159;
+const double Tolerance = 3e-8;
+const double MinValue = 0.0;
+const double MaxValue = 100.0;
 const int NPoints = 10;
 
+
 void ReadData(double Un[], double Unk[], double k[], int numb[]);
+double Measurement_Error(double Un[], int numb[]);
 double decriment (double  b, double c, double k);
-double dobrotnost (double decr);
-void ResultFile(double decr[], double dobr[],int numb[]);
+double quality (double decr);
+void ResultFile(double decr[], double arr_quality[],int numb[]);
 
 int main()
 {
@@ -22,16 +26,19 @@ int main()
     double Unk[10] = {0};
     double k[10] = {0};
     double decr[10] = {0};
-    double dobr[10] = {0};
+    double arr_quality[10] = {0};
     int numb[1] = {0};
 
     ReadData(Un, Unk, k, numb);
     for (int i = 0; i < numb[0]; i ++)
     {
         decr[i] = decriment(Un[i], Unk[i], k[i]);
-        dobr[i] = dobrotnost(decr[i]);
+        arr_quality[i] = quality(decr[i]);
     }
-    ResultFile(decr, dobr, numb);
+    ResultFile(decr, arr_quality, numb);
+    double errrUn = Measurement_Error( Un, numb);
+    printf("\nUn measurement error: ");
+    printf("%lg\n", errrUn);
 
     return 0;
 }
@@ -57,32 +64,71 @@ void ReadData(double Un[], double Unk[], double k[], int numb[])
     numb [0] = line;
 }
 
-void ResultFile(double decr[], double dobr[],int numb[])
+double Measurement_Error(double Un[], int numb[])
+{
+    double sum1 = 0;
+    double sum2 = 0;
+    for (int i = 0; i < numb[0]; i++)
+    {
+        sum1 = sum1 + Un[i];
+    }
+    double   average = sum1/numb[0];
+    for (int k = 0; k < numb[0]-1; k++)
+    {
+
+      sum2 = sum2 + ((Un[k] - average) * (Un[k] - average));
+    }
+    double err = sqrt (sum2 / (numb[0] * (numb[0] - 1)));
+    return err;
+}
+
+void ResultFile(double decr[], double arr_quality[],int numb[])
 {
     FILE* f2 = fopen("results.txt", "w");
 
-    fprintf(f2,"decriment   dobrotnost\n");
+    fprintf(f2,"decriment   quality\n");
     for(int i = 0; i < numb[0]; i++)
     {
-        fprintf(f2,"%lg   %lg\n", decr[i], dobr[i]);
+        fprintf(f2,"%lg   %lg\n", decr[i], arr_quality[i]);
     }
     fclose(f2);
 }
 
 double decriment (double  b, double c, double k)
 {
-  if((k == 0) || (c == 0))
-    printf("Error in decr!\n");
-  float a = (1/k) * log(b/c);
 
-  return a;
+        if (k > MinValue - Tolerance && k < MaxValue - Tolerance)
+    {
+        if (k > 0.0 - Tolerance && k < 0.0 + Tolerance)
+        {
+           printf("Error in decr!\n");
+        }
+    }
+
+
+        if (c > MinValue - Tolerance && c < MaxValue - Tolerance)
+    {
+        if (c > 0.0 - Tolerance && c < 0.0 + Tolerance)
+        {
+           printf("Error in decr!\n");
+        }
+    }
+
+    float a = (1/k) * log(b/c);
+
+    return a;
 }
 
-double dobrotnost (double decr)
+double quality (double decr)
 {
-  if(decr == 0)
-    printf("Error in dobr!\n");
-   float a = pi/decr;
+        if (decr > MinValue - Tolerance && decr < MaxValue - Tolerance)
+    {
+        if (decr > 0.0 - Tolerance && decr < 0.0 + Tolerance)
+        {
+           printf("Error in quality!\n");
+        }
+    }
+    float a = M_PI/decr;
 
-  return a;
+    return a;
 }
