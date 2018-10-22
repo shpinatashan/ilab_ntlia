@@ -12,6 +12,7 @@ const int NPoints = 10;
 
 void ReadData(double Un[], double Unk[], double k[], int numb[]);
 double Measurement_Error(double Un[], int numb[]);
+void Error(double value);
 double decriment (double  b, double c, double k);
 double quality (double decr);
 void ResultFile(double decr[], double arr_quality[],int numb[]);
@@ -103,23 +104,8 @@ void ResultFile(double decr[], double arr_quality[],int numb[])
 double decriment (double  b, double c, double k)
 {
 
-        if (k > MinValue - Tolerance && k < MaxValue - Tolerance)
-    {
-        if (k > 0.0 - Tolerance && k < 0.0 + Tolerance)
-        {
-           printf("Error in decr!\n");
-        }
-    }
-
-
-        if (c > MinValue - Tolerance && c < MaxValue - Tolerance)
-    {
-        if (c > 0.0 - Tolerance && c < 0.0 + Tolerance)
-        {
-           printf("Error in decr!\n");
-        }
-    }
-
+    Error(k);
+    Error(c);
     float a = (1/k) * log(b/c);
 
     return a;
@@ -127,14 +113,20 @@ double decriment (double  b, double c, double k)
 
 double quality (double decr)
 {
-        if (decr > MinValue - Tolerance && decr < MaxValue - Tolerance)
-    {
-        if (decr > 0.0 - Tolerance && decr < 0.0 + Tolerance)
-        {
-           printf("Error in quality!\n");
-        }
-    }
+    Error(decr);
     float a = M_PI/decr;
 
     return a;
+}
+
+void Error(double value)
+{
+
+    if (value > MinValue - Tolerance && value < MaxValue - Tolerance)
+    {
+        if (value > 0.0 - Tolerance && value < 0.0 + Tolerance) // то же самое можно записать так: fabs(value) < Tolerance
+        {
+            printf("Error!");
+        }
+    }
 }
