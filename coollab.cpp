@@ -16,6 +16,7 @@ void Error(double value);
 double decriment (double  b, double c, double k);
 double quality (double decr);
 void ResultFile(double decr[], double arr_quality[],int numb[]);
+void MyFree(double** arr);
 
 int main()
 {
@@ -23,11 +24,11 @@ int main()
     printf (" Data is in the file 'laba.txt' \n");
     printf (" Results is in the file 'results.txt' \n");
 
-    double Un[NPoints] = {0};
-    double Unk[NPoints] = {0};
-    double k[NPoints] = {0};
-    double decr[NPoints] = {0};
-    double arr_quality[NPoints] = {0};
+    double* Un   = (double*)calloc(10, sizeof(double));
+    double* Unk  = (double*)calloc(10, sizeof(double));
+    double* k    = (double*)calloc(10, sizeof(double));
+    double* decr = (double*)calloc(10, sizeof(double));
+    double* arr_quality = (double*)calloc(10, sizeof(double));
     int numb[1] = {0};
 
     ReadData(Un, Unk, k, numb);
@@ -41,6 +42,11 @@ int main()
     printf("\nUn measurement error: ");
     printf("%lg\n", errrUn);
 
+    MyFree(&Un);
+    MyFree(&Unk);
+    MyFree(&k);
+    MyFree(&decr);
+    MyFree(&arr_quality);
     return 0;
 }
 
@@ -53,7 +59,7 @@ void ReadData(double Un[], double Unk[], double k[], int numb[])
 
     if (f1 == NULL)
     {
-        printf("Cannot open file");
+        printf("Cannot open datafile");
         return;
     }
 
@@ -92,6 +98,11 @@ void ResultFile(double decr[], double arr_quality[],int numb[])
     char fname[20] = {};
     scanf("%s",fname);
     FILE* f2 = fopen(fname, "w");
+    if (f2 == NULL)
+    {
+        printf("Cannot open resfile");
+        return;
+    }
 
     fprintf(f2,"decriment   quality\n");
     for(int i = 0; i < numb[0]; i++)
@@ -129,4 +140,10 @@ void Error(double value)
             printf("Error!");
         }
     }
+}
+
+void MyFree(double** arr)
+{
+    free(*arr);
+    *arr = NULL;
 }
