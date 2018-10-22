@@ -124,7 +124,7 @@ void Error(double value)
 
     if (value > MinValue - Tolerance && value < MaxValue - Tolerance)
     {
-        if (value > 0.0 - Tolerance && value < 0.0 + Tolerance) // то же самое можно записать так: fabs(value) < Tolerance
+        if (value > 0.0 - Tolerance && value < 0.0 + Tolerance)
         {
             printf("Error!");
         }
