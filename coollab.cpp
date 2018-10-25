@@ -60,7 +60,11 @@ int main()
 
 void check(double* ptr)
 {
-    if (ptr == NULL) printf ("error in calloc");
+    if (ptr == NULL)
+     {
+        printf ("error in calloc");
+        return -1;
+     }
 }
 
 void ReadData(double Un[], double Unk[], double k[], int numb[])
