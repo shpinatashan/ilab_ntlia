@@ -9,7 +9,7 @@ const double MinValue = 0.0;
 const double MaxValue = 100.0;
 const int NPoints = 10;
 
-
+void check(double* ptr);
 void ReadData(double Un[], double Unk[], double k[], int numb[]);
 double Measurement_Error(double Un[], int numb[]);
 void Error(double value);
@@ -17,6 +17,7 @@ double decriment (double  b, double c, double k);
 double quality (double decr);
 void ResultFile(double decr[], double arr_quality[],int numb[]);
 void MyFree(double** arr);
+
 
 int main()
 {
@@ -30,6 +31,12 @@ int main()
     double* decr = (double*)calloc(10, sizeof(double));
     double* arr_quality = (double*)calloc(10, sizeof(double));
     int numb[1] = {0};
+
+    check(Un);
+    check(Unk);
+    check(k);
+    check(decr);
+    check(arr_quality);
 
     ReadData(Un, Unk, k, numb);
     for (int i = 0; i < numb[0]; i ++)
@@ -47,7 +54,13 @@ int main()
     MyFree(&k);
     MyFree(&decr);
     MyFree(&arr_quality);
+
     return 0;
+}
+
+void check(double* ptr)
+{
+    if (ptr == NULL) printf ("error in calloc");
 }
 
 void ReadData(double Un[], double Unk[], double k[], int numb[])
