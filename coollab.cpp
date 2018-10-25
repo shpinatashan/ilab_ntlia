@@ -32,11 +32,12 @@ int main()
     double* arr_quality = (double*)calloc(10, sizeof(double));
     int numb[1] = {0};
 
-    check(Un);
-    check(Unk);
-    check(k);
-    check(decr);
-    check(arr_quality);
+    if (check(Un)   == -1) return -1;
+    if (check(Unk)  == -1) return -1;
+    if (check(k)    == -1) return -1;
+    if (check(decr) == -1) return -1;
+    if (check(arr_quality) == -1) return -1;
+
 
     ReadData(Un, Unk, k, numb);
     for (int i = 0; i < numb[0]; i ++)
