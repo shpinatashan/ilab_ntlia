@@ -9,7 +9,7 @@ const double MinValue = 0.0;
 const double MaxValue = 100.0;
 const int NPoints = 10;
 
-void check(double* ptr);
+int check(double* ptr);
 void ReadData(double Un[], double Unk[], double k[], int numb[]);
 double Measurement_Error(double Un[], int numb[]);
 void Error(double value);
@@ -58,7 +58,7 @@ int main()
     return 0;
 }
 
-void check(double* ptr)
+int check(double* ptr)
 {
     if (ptr == NULL)
      {
